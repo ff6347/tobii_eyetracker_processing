@@ -14,7 +14,7 @@ float y; // will hold the current y GazePoint
 float px;  // will hold the previous x GazePoint
 float py;  // will hold the previous y GazePoint
 int count; // the points to not run into a NullPointer Exception
-boolean saveImageSequence = true; // set this to true to save images
+boolean saveImageSequence = false; // set this to true to save images
 void setup() {
 
   table = loadTable("rec05-data.tsv", "header, tsv");
@@ -69,7 +69,7 @@ void draw() {
   if (saveImageSequence) {
     saveFrame("tracker-#####.jpg");
   }
-  
+
   count++;// increment the counter by one
   // constrain the counter
   // if not we get a nullpointer exception
@@ -77,7 +77,7 @@ void draw() {
     count = 0;// reset
     background(255);// delete the image
     // if you are saving a sequence
-    if(saveImageSequence){
+    if (saveImageSequence) {
       exit();// stop the programm
     }
   }
