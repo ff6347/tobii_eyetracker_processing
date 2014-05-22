@@ -7,27 +7,31 @@
  */
 Table table; // declare a table
 int w, h; // for the size of the canvas
-ArrayList <PVector> points;
+ArrayList <PVector> points; // will hold the GazePoints X/Y
 void setup() {
 
-  table = loadTable("tobii-CSVExport-All-Data-noheader-nofilter.tsv", "header, tsv");
+  table = loadTable("rec05-data.tsv", "header, tsv");
   // get the size of the canvas from the MediaWidth and MediaHeight columns
   w = table.getInt(0, "MediaWidth");
   h = table.getInt(0, "MediaHeight");
   size(w, h);// now set the size depending on the media
   points = getPoints(table);
-
+  // draw the lines with vertex
   noFill();
+  
   beginShape();
+  // loop all the points to get the single PVector
   for (int i = 0 ; i < points.size();i++) {
     PVector p = points.get(i);
-    vertex(p.x, p.y);
+    vertex(p.x, p.y); // draw it
   }
   endShape();
+  
+  // now draw the points  
   fill(255);
     for (int i = 0 ; i < points.size();i++) {
     PVector p = points.get(i);
-    ellipse(p.x, p.y,10,10);
+    ellipse(p.x, p.y,10,10);// draw the single PVector
   }
 }
 void draw() {
@@ -43,6 +47,12 @@ ArrayList <PVector> getPoints (Table t) {
     // String number = row.getString("Number"); // get a string from the current row
     float x = row.getFloat("GazePointX"); // get a float from ...
     float y = row.getFloat("GazePointY"); // ...
+    if(Float.isNaN(x) || x <= 0 || x > width){
+      continue;
+    }
+    if(Float.isNaN(y) || y <= 0 || y > height){
+      continue;
+    }
     temp.add(new PVector(x, y));
   }
   return temp;
